@@ -1,0 +1,291 @@
+/* Include the padding and border in an element's total width and height */
+* {
+    box-sizing: border-box;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    /* left: -100px; */
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1dc; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgb(109, 109, 109); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+body {
+    /* background-image:url('https://source.unsplash.com/featured/daily?gray'); */
+    /* background-image:url('/background.jpg'); */
+    /* background-size:100%; */
+    /* background-repeat: no-repeat; */
+    background-color: #202020;
+}
+
+#main{
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+}
+
+#most-visited{
+    position: relative;
+    max-width: 200px;
+}
+
+#current-tabs{
+    width: calc(100% - 190px);
+    padding-left: 20px;
+    clear: none;
+    /* max-height: 400px; */
+}
+
+#current-tabs-master-content{
+    flex: 1;
+    display: flex;
+    overflow-y: auto;
+    max-height: 350px;
+}
+
+#current-tabs-master-box{
+    /* border: 2px solid #ddd; */
+    /* border:none; */
+    min-height: min-content;
+    /* overflow-y: scroll; */
+    display: flex;
+    /* flex-direction: row; */
+    margin: 0 0 0 0px;
+    padding: 0 0 0 0;
+}
+
+#saved-tabs{
+    /* max-width: calc(100% - 10px); */
+    /* clear: left; */
+    /* max-height: 400px; */
+}
+
+#saved-tabs-master-content{
+    width: calc(100% - 10px);
+    flex: 1;
+    /* flex:auto; */
+    display: flex;
+    overflow-y: auto;
+    max-height: 260px;
+}
+
+#saved-tabs-master-box{
+    /* border: 2px solid #ddd; */
+    /* border:none; */
+    min-height: min-content;
+    /* overflow-y: scroll; */
+    display: flex;
+    /* flex-direction: row; */
+    margin: 0 0 0 0px;
+    /* margin-top: auto; */
+    padding: 0 0 0 0;
+    /* flex: auto; */
+}
+
+div[id$='tabs-master-content']{
+    /* margin-top: 20px; */
+}
+
+a {
+    color: #252525;
+    text-decoration: none;
+}
+
+p {
+    color: #252525;
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    /* width: 150px; */
+    text-overflow: ellipsis; 
+    margin: 0;
+}
+
+/* Remove margins and padding from the list */
+ul {
+    /* border: 2px solid #ddd; */
+    /* margin: 6px; */
+    padding: 0px 0px;
+    list-style-type: none;
+}
+
+.tabsList {
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+
+.tabsList:first-child {
+    /* margin-left: 8px; */
+}
+
+/* .tabsList:hover .dropdown{
+    visibility: visible;
+} */
+
+/* Style the list items */
+ul li {
+    cursor: pointer;
+    position: relative;
+    margin: 10px 0px;
+    padding: 4px 8px;
+    background: #bbbbbb;
+    font-size: 12px;
+    transition: 0.2s;
+    width: 180px !important;
+
+    /* make the list items unselectable */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Darker background-color on hover */
+ul li:hover {
+    background: #ddd;
+}
+
+.windowLink {
+    margin-top: 0px;
+    margin-right: 10px;
+}
+
+.favico_img {
+    max-height: 16px;
+    margin-right: 6px;
+    margin-left: -1px;
+    padding-top: 1px;
+}
+
+.hoversave {
+    visibility: hidden;
+    float: right;
+    color: white;
+    background: green;
+    margin: -4px -8px;
+    padding: 4px 10px;
+}
+
+.hoverdelete {
+    visibility: hidden;
+    float: right;
+    color: white;
+    background: red;
+    margin: -4px -8px;
+    padding: 4px 10px;
+}
+
+.hoveropen {
+    visibility: hidden;
+    float: right;
+    color: white;
+    background: green;
+    margin: -4px 8px;
+    padding: 4px 10px;
+}
+
+.windowLink:hover p.hoversave{
+    visibility: visible; 
+}
+
+.windowLink:hover p.hoverdelete{
+    visibility: visible; 
+}
+
+.windowLink:hover p.hoveropen{
+    visibility: visible; 
+}
+
+.truncated {
+    display: block;
+    /* float: right; */
+    white-space: nowrap;
+    overflow: hidden;
+    /* width: 150px; */
+    text-overflow: ellipsis; 
+    /* margin: -4px 8px; */
+    /* padding: 4px 10px; */
+}
+
+.visitheader {
+    align-items: center;
+    text-align: center;
+    color: #ddd;
+}
+
+.tabheader {
+    align-items: left;
+    text-align: left;
+    /* display:inline; */
+    /* float:left; */
+    color: #ddd;
+    padding: 0 0 0 10px;
+    /* padding: 10px; */
+    /* margin: 16px; */
+    /* vertical-align: middle; */
+}
+
+.savedheader {
+    align-items: left;
+    text-align: left;
+    display:inline;
+    /* float:left; */
+    color: #ddd;
+    padding: 0 0 0 10px;
+    /* padding: 10px; */
+    /* margin: 16px; */
+    vertical-align: middle;
+    margin-right: 30px;
+}
+
+.storagearea {
+    align-items: left;
+    text-align: left;
+    display:inline;
+    /* position:relative; */
+    /* float:right; */
+    vertical-align: middle;
+    margin-right: 10px;
+    color: #ddd;
+}
+
+#saved_title {
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+#progressback {
+    display:inline-block;
+    width: 140px;
+    background-color: grey;
+}
+
+#progressbar {
+    width: 0%;
+    height: 20px;
+    background-color: green;
+    display:inline-block;
+    vertical-align: middle;
+}
+
+.dropdown {
+    visibility: visible;
+    margin-left: 10px;
+    max-width: 170px;
+}

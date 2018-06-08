@@ -1,0 +1,11 @@
+{
+    "saveAndRun": {
+        "commands": [
+            {
+                "cmd": "refreshonsaveutil.vbs",
+                "silent": true
+            }
+        ]
+    },
+    "git.ignoreLimitWarning": true
+}
