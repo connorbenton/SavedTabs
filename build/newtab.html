@@ -2,17 +2,35 @@
 <html lang="en">
         <head>
           <meta charset="utf-8">
-      
-    <title>start</title>
+          <link rel="icon" type="image/png" sizes="32x32" href="/save_48.png">
+          <link rel="icon" type="image/png" sizes="16x16" href="/save_48.png">
+          <!-- <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png"> -->
+          <link rel="shortcut icon" href="/save_48.png">
+    <title>SavedTabs - start</title>
   </head>
   <body>
+    <div id="saved_title">
+        <h1 class="savedheader">Most Visited</h1>
+        <h1 class="savedheader">Current Tabs</h1>
+        <img id="settingsimg" class="settingsimg" height="32px" width="32px" src="/settings_white_48.png">
+        <div class="settings-content" id="mySettings">
+          <label id="colortheme">Color Theme: Light</label>
+          <label id="backgrounddisable">Background Image: Disabled</label>
+          <label id="backgroundpicker" for="bg_upload">
+            <!-- <input type="file" id="bg_upload" accept="image/*" style="display:none"> -->
+            <!-- <input type="file" id="bg_upload" accept="image/*"> -->
+            <input type="url" id="bg_upload">
+            <button id="pickerbtn">Set Background Image</button>
+          </label>
+        </div>
+      </div clear:"none">
     <div id="main">
     <div id="most-visited">
-        <h1 class="visitheader">Most Visited</h1>
+        <!-- <h1 class="visitheader">Most Visited</h1> -->
         <ul id="most-visited-list"></ul> 
         </div>
     <div id="current-tabs">
-        <h1 class="tabheader">Current Tabs</h1>
+        <!-- <h1 class="tabheader">Current Tabs</h1> -->
           <div id="current-tabs-master-content">
             <div id="current-tabs-master-box">
             </div>

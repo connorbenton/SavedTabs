@@ -1,3 +1,60 @@
+// function myOpenSettings() {
+//     var myDropdown = document.getElementById("mySettings").classList.add("show");
+// }
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(e) {
+  if (e.target.matches('#colortheme')) {
+    // var myDropdown = document.getElementById("mySettings");
+    //   if (myDropdown.classList.contains('show')) {
+        // myDropdown.classList.remove('show');
+    //   }
+    if (e.target.innerHTML == "Color Theme: Light") {
+        document.documentElement.style.setProperty('--color-1', 'rgb(25,25,25)');
+        document.documentElement.style.setProperty('--color-2', 'rgb(85,85,85)');
+        document.documentElement.style.setProperty('--color-3', 'rgb(109,109,109)');
+        document.documentElement.style.setProperty('--color-4', 'rgb(206,206,206)');
+        document.documentElement.style.setProperty('--color-5', 'rgb(240,240,240)');
+        document.getElementById("settingsimg").style.filter = 'invert(80%)';
+        e.target.innerHTML = "Color Theme: Dark";
+    } else {
+        document.documentElement.style.setProperty('--color-1', 'rgb(240,240,240)');
+        document.documentElement.style.setProperty('--color-2', 'rgb(206,206,206)');
+        document.documentElement.style.setProperty('--color-3', 'rgb(109,109,109)');
+        document.documentElement.style.setProperty('--color-4', 'rgb(85,85,85)');
+        document.documentElement.style.setProperty('--color-5', 'rgb(85,25,25)');
+        document.getElementById("settingsimg").style.filter = 'invert(20%)';
+        e.target.innerHTML = "Color Theme: Dark";
+        e.target.innerHTML = "Color Theme: Light";
+    }
+  }
+  else if (e.target.matches('#backgrounddisable')) {
+        chrome.storage.local.clear(function callback() {
+            var el = document.querySelector('body');
+            el.style.backgroundImage = '';
+            var tfield = document.getElementById('bg_upload');
+            tfield.value = '';
+        });
+  }
+  else if (e.target.matches('#backgroundpicker') || e.target.parentElement.matches('#backgroundpicker')) {
+
+  }
+  else if (e.target.matches('.settingsimg')) {
+//   if (e.target.matches('.settingsimg')) {
+    var myDropdown = document.getElementById("mySettings");
+      if (myDropdown.classList.contains('show')) {
+        myDropdown.classList.remove('show');
+      }
+      else myDropdown.classList.add('show');
+    }
+    else {
+    var myDropdown = document.getElementById("mySettings");
+      if (myDropdown.classList.contains('show')) {
+        myDropdown.classList.remove('show');
+      }
+    }
+}
+
 function insertVisitedSites (mostVisitedURL) {
     var linkdiv = document.getElementById('most-visited-list');
 
@@ -518,12 +575,13 @@ var SavedTabsLib = {
     timeout_write: 0,
 };
 
-chrome.topSites.get(insertVisitedSites);
 
 SavedTabsLib.favico_array = ["chrome://favicon/1"];
 SavedTabsLib.saved_favico_array = ["chrome://favicon/1"];
 
 var RefreshCurrent = throttle(function() {
+    
+return new Promise((resolve, reject) => {
 
 // SavedTabsLib.favico_array = [];
 // SavedTabsLib.saved_favico_array = [];
@@ -571,10 +629,13 @@ console.log("Current URL array length " + JSON.stringify(SavedTabsLib.url_array)
 console.log("Current favico array length " + JSON.stringify(SavedTabsLib.favico_array).length);
 updateTabLinks(SavedTabsLib.url_array,SavedTabsLib.favico_array,true);
 // console.log("current refreshed");
+resolve('Success!');
 }); 
+});
 },5000);
 
 function RefreshSaved() {
+    return new Promise((resolve, reject) => {
 
 var total_storage = {};
 chrome.storage.sync.get(null, function callback(items) { 
@@ -615,22 +676,136 @@ chrome.storage.sync.get(null, function callback(items) {
         SavedTabsLib.saved_url_array = [];
     }
         updateProgress(total_storage);
+        resolve("Success!");
  });
+});
 }
 
-RefreshCurrent();
-RefreshSaved();
+function setImage(url, timeoutT) {
+    return new Promise(function (resolve, reject) {
+        var timeout = timeoutT || 5000;
+        var timer, img = new Image();
+        img.onerror = img.onabort = function () {
+            clearTimeout(timer);
+            reject("error");
+            alert('The URL you entered is not an image!');
+            var tfield = document.getElementById('bg_upload');
+            tfield.value = '';
+        };
+        img.onload = function () {
+            clearTimeout(timer);
+            resolve("success");
+            chrome.storage.local.clear(function callback() {
+                chrome.storage.local.set({'SavedTabsBackground': url}, function() {
+                    var el = document.querySelector('body');
+                    el.style.backgroundImage = 'url(' + url + ')';
+                    var tfield = document.getElementById('bg_upload');
+                    tfield.value = '';
+                });
+            });
+        }
+        timer = setTimeout(function () {
+            // reset .src to invalid URL so it stops previous
+            // loading, but doesn't trigger new load
+            img.src = "//!!!!/test.jpg";
+            reject("timeout");
+            alert('Image timeout on the URL you entered - please try another URL!');
+            var tfield = document.getElementById('bg_upload');
+            tfield.value = '';
+        }, timeout);
+        img.src = url;
+    });
+}
+
+function CheckForBackground() {
+    // chrome.storage.local.get(null, function(result) {
+    //     console.log('result');
+    // });
+    chrome.storage.local.get(['SavedTabsBackground'], function callback(result) {
+        if (result.SavedTabsBackground) {
+            var el = document.querySelector('body');
+            el.style.backgroundImage = 'url(' + result.SavedTabsBackground + ')';
+        }
+        else {
+            var el = document.querySelector('body');
+            el.style.backgroundImage = '';
+        }
+    });
+}
+
+
+Promise.all([RefreshCurrent(), RefreshSaved()]);
+CheckForBackground();
+chrome.topSites.get(insertVisitedSites);
+// RefreshCurrent();
+// RefreshSaved();
+
+// document.getElementById("settingsimg").addEventListener("click", function() {myOpenSettings();});
+document.getElementById("pickerbtn").addEventListener("click", function() {
+    var url = document.getElementById("bg_upload").value;
+    setImage(url,2000);
+
+});
+
+// var backgroundUpload = document.getElementById('bg_upload');
+// backgroundUpload.onchange = function(evt) {
+//     var tgt = evt.target || window.event.srcElement, 
+//     files = tgt.files;
+//     if (FileReader && files && files.length) {
+//         if (files.length < 0) {
+//             alert('Please select an image!');
+//         }
+//         else if (files.length > 1) {
+//             alert('Please select only one image');
+//         }
+//         else {
+//             var img = files[0];
+//             var img_size = img.size;
+//             // console.log(img_size);
+//             if (img_size > chrome.storage.local.QUOTA_BYTES) {
+//                 alert('Image is too large!');
+//             }
+//             else {
+//                 var reader = new FileReader();
+//                 reader.onload = function () {
+//                     // console.log(reader.result.length);
+//                     if (reader.result.length > chrome.storage.local.QUOTA_BYTES - 50) {
+//                         alert('Image is too large!');
+//                     }
+//                     else {
+//                         chrome.storage.local.clear(function callback() {
+//                             chrome.storage.local.set({'SavedTabsBackground': reader.result}, function() {
+//                                 var el = document.querySelector('body');
+//                                 el.style.backgroundImage = 'url(' + reader.result + ')';
+//                             });
+//                         });
+//                     }
+//                 }
+//                 reader.readAsDataURL(img);
+//             }
+//         }
+//     }
+// }
+// backgroundUpload.addEventListener('change', (e) => uploadAndSetBackground(e.target.files));
 
 document.addEventListener('visibilitychange', function() {
     RefreshCurrent();
+    // CheckForBackground();
 });
     // chrome.storage.sync.get(null, function callback(items) { console.log(items) });
 // console.log(total_storage);
 
 chrome.storage.onChanged.addListener(function callback(){
-    throttle(RefreshSaved(),100);
-    // RefreshSaved();
+    // throttle(CheckForBackground(),1000);
+    // throttle(RefreshSaved(),100);
+    CheckForBackground();
+    RefreshSaved();
 });
+
+// chrome.storage.local.onChanged.addListener(function callback(){
+//     throttle(CheckForBackground(),5000);
+//     // RefreshSaved();
+// });
 
 chrome.tabs.onUpdated.addListener(function callback(tabId, info){
     if (info.status === 'complete') RefreshCurrent();

@@ -1,0 +1,1 @@
+This repo contains the source code for the SavedTabs extension, found on the [chrome web store](https://chrome.google.com/webstore/detail/savedtabs/olbpgfmpkjjcledkdaeohgdmjgbellje).
